@@ -21,7 +21,11 @@ struct ContentView: View {
             List{
                 ForEach(wishes){ wish in
                     Text(wish.title).font(.title.weight(.light))
-                        .padding(.vertical,2)
+                        .padding(.vertical,2).swipeActions{
+                            Button("Delete",role : .destructive){
+                                modelContext.delete(wish)
+                            }
+                        }
                 }
             }
             .toolbar{
@@ -33,6 +37,12 @@ struct ContentView: View {
                             .imageScale(.large)
                     }
                     
+                }
+                
+                if wishes.isEmpty != true{
+                    ToolbarItem(placement : .bottomBar){
+                        Text("\(wishes.count) wish\(wishes.count > 1 ? "es" : "")")
+                    }
                 }
             }
             .alert("Create a new wish", isPresented: $isAlertShowing){
